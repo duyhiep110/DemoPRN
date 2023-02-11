@@ -5,7 +5,7 @@ namespace DemoPRN.Repository.Implement
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
-        private MyDbContext _repositoryContext;
+        protected MyDbContext _repositoryContext;
 
         protected RepositoryBase(MyDbContext repositoryContext)
         {

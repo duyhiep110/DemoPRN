@@ -33,5 +33,10 @@ namespace DemoPRN.Repository.Implement
         {
             return GetByCondition(c => c.Id.Equals(companyId), trackChanges).SingleOrDefault();
         }
+
+        public void UpdateCompany(Company company)
+        {
+            Update(company);
+        }
     }
 }

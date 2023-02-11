@@ -7,11 +7,9 @@
         private ICompanyRepository _companyRepository;
         private IEmployeeRepository _employeeRepository;
 
-        public RepositoryManager(MyDbContext repositoryContext, ICompanyRepository companyRepository, IEmployeeRepository employeeRepository)
+        public RepositoryManager(MyDbContext repositoryContext)
         {
             _repositoryContext = repositoryContext;
-            _companyRepository = companyRepository;
-            _employeeRepository = employeeRepository;
         }
 
         public ICompanyRepository CompanyRepository
