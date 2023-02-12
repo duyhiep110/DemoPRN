@@ -14,7 +14,7 @@ namespace DemoPRN.Controllers
     {
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
-
+        
         public EmployeeController(IRepositoryManager repository, IMapper mapper)
         {
             _repository = repository;
@@ -54,7 +54,7 @@ namespace DemoPRN.Controllers
             _repository.Save();
             var employeeToReturn = _mapper.Map<EmployeeDto>(employeeEntity);
 
-            return CreatedAtRoute("GetEmployeeForCompany", new {companyId, id = employeeToReturn.Id},employeeToReturn);
+            return Ok(employeeToReturn);
         }
 
         [HttpGet("{id}", Name = " GetEmployeeForCompany")]
