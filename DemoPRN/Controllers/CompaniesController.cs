@@ -34,11 +34,22 @@ namespace DemoPRN.Controllers
         }
 
         // GET api/<CompaniesController>/5
-        [HttpGet("{id}")]
-        public IActionResult GetCompany(Guid id)
+        [HttpGet("id")]
+        public IActionResult GetCompany([FromQuery] Guid id)
         {
             var company = _repositoryManger.CompanyRepository.GetCompany(id, false);
             if(company == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<CompanyDto>(company));
+        }
+
+        [HttpGet("cid")]
+        public IActionResult GetCompanyByHeader([FromHeader(Name = "cid")] Guid id)
+        {
+            var company = _repositoryManger.CompanyRepository.GetCompany(id, false);
+            if (company == null)
             {
                 return NotFound();
             }
@@ -66,7 +77,7 @@ namespace DemoPRN.Controllers
 
         // PUT api/<CompaniesController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateCompany(Guid id, [FromBody] CompanyForUpdateDto dto)
+        public IActionResult UpdateCompany(Guid id, [FromForm] CompanyForUpdateDto dto)
         {
             if (dto == null)
             {
