@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DemoPRN.Dtos.Company;
 using DemoPRN.Dtos.Employee;
+using DemoPRN.Models;
 using DemoPRN.Repository;
 using DemoPRN.Repository.Implement;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,30 @@ namespace DemoPRN.Controllers
             return Ok(employeesDto);
         }
 
+        [HttpPost]
+        public IActionResult CreateEmployeeForCompany(Guid companyId,[FromBody] EmployeeForCreateDto dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest("EmployeeForCreateDto object is null");
+            }
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+            var company = _repository.CompanyRepository.GetCompany(companyId, false);
+            if(company == null)
+            {
+                return NotFound();
+            }
+            var employeeEntity = _mapper.Map<Employee>(dto);
+            _repository.EmployeeRepository.CreateEmployee(companyId, employeeEntity);
+            _repository.Save();
+            var employeeToReturn = _mapper.Map<EmployeeDto>(employeeEntity);
+
+            return CreatedAtRoute("GetEmployeeForCompany", new {companyId, id = employeeToReturn.Id},employeeToReturn);
+        }
+
         [HttpGet("{id}", Name = " GetEmployeeForCompany")]
         public IActionResult GetEmployeesForCompany(Guid companyId,Guid id) {
             var company = _repository.CompanyRepository.GetCompany(companyId,trackChanges: false);
@@ -39,7 +64,7 @@ namespace DemoPRN.Controllers
             {
                 return NotFound();
             }
-            var employeeDb = _repository.EmployeeRepository.GetEmployee(companyId, trackChanges: false);
+            var employeeDb = _repository.EmployeeRepository.GetEmployee(companyId, id, trackChanges: false);
             if(employeeDb == null)
             {
                 return NotFound();
