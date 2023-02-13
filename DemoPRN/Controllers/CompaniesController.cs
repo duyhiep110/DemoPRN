@@ -87,7 +87,7 @@ namespace DemoPRN.Controllers
             {
                 return UnprocessableEntity(ModelState);
             }
-            var company = _repositoryManger.CompanyRepository.GetCompany(id, false);
+            var company = _repositoryManger.CompanyRepository.GetCompany(id, true);
             if (company == null)
             {
                 return NotFound("No Company is founded");
@@ -103,7 +103,7 @@ namespace DemoPRN.Controllers
         public IActionResult DeleteCompany(Guid id)
         {
 
-            var company = _repositoryManger.CompanyRepository.GetCompany(id, false);
+            var company = _repositoryManger.CompanyRepository.GetCompany(id, true);
             if (company == null)
             {
                 return NotFound();
